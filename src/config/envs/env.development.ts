@@ -5,38 +5,12 @@ const projectRootPath = path.join(__dirname, '../../../../');
 require('dotenv').config({ path: path.join(projectRootPath, '.env') });
 export const config = {
   db: {
-    uri: process.env.MONGODB_URL_LOCAL,
+    uri: process.env.MONGODB_URL_PROD,
   },
   port: process.env.PORT,
-  jwtAlgorithm: process.env.ALG,
-  privateKey: process.env.PRIVATE_KEY,
-  publicKey: process.env.PUBLIC_KEY,
+  KEY_API_AIR_QUALITY: process.env.KEY_API_AIR_QUALITY,
+  URL_API_AIR_QUALITY:process.env.URL_API_AIR_QUALITY,
   timezone: {
     zone: 'Africa/Dakar',
-  },
-  accountId : process.env.LAM_ACCOUNT_ID,
-  password : process.env.LAM_PASSWORD,
-  LAM_API : process.env.LAM_API,
-  AwsAccessKeyId : process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey : process.env.AWS_SECRET_ACCESS_KEY,
-  awsS3BucketName : process.env.AWS_S3_BUCKET_NAME,
-  OM_GRANT_TYPE: process.env.OM_GRANT_TYPE,
-  OM_CLIENT_SECRET: process.env.OM_CLIENT_SECRET,
-  OM_CLIENT_ID : process.env.OM_CLIENT_ID,
-  OM_MERCHANT_CODE : process.env.OM_MERCHANT_CODE,
-  ORANGE_AUTHENTICATION_ENDPOINT : process.env.ORANGE_AUTHENTICATION_ENDPOINT,
-  OM_PIN_CODE : process.env.OM_NEW_PIN,
-  orangeApi : process.env.ORANGE_API,
-  freeMoneyApi : process.env.FREEMONEY_API,
-  MSISDN_FREE_MONEY: process.env.MSISDN_FREE_MONEY,
-  MSISDN_CASHIN_FREE_MONEY : process.env.MSISDN_CASHIN_FREE_MONEY,
-  PIN_CASHIN_FREE_MONEY : process.env.PIN_CASHIN_FREE_MONEY,
-  PIN_FREE_MONEY : process.env.PIN_FREE_MONEY,
-  WAVE_AGGREGATED_MERCHANT_ID : process.env.AGGREGATED_MERCHANT_ID, 
-  WAVE_API_KEY : process.env.WAVE_API_KEY,
-  WAVE_API_URL : process.env.WAVE_API_URL,
-  WAVE_WEBHOOK_SECRET : process.env.WAVE_WEBHOOK_SECRET,
-  publicKey_OM: process.env.PUBLIC_KEY_OM,
-  redisPort : process.env.REDIS_PORT,
-
+  }
 };
