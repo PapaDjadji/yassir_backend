@@ -54,7 +54,6 @@ export class AirQualityController {
     logger.info("--- MOST_POLLUTED.CONTROLLER.GET_DATE_TIME INIT ---");
     try {
       const mostPolluted = await this.airQualityService.findMostPolluted();
-      console.log("mostPoluuted", mostPolluted);
       return res.status(HttpStatus.OK).json({ mostPolluted });
     }
     catch (error) {

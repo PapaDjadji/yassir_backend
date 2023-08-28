@@ -1,7 +1,6 @@
 import { HttpException, Injectable, Post, Req, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { logger } from 'src/utils/logger';
 import { CreateAirQualityDto } from './dto/create-airQuality.dto';
 import { UpdateAirQualityDto } from './dto/update-airQuality.dto';
 import { AirQuality } from './interfaces/airQuality.interface';
@@ -35,20 +34,20 @@ export class AirQualityService {
   }
 
   findAll() {
-    return `This action returns all operator`;
+    return `This action returns all airQuality`;
   }
 
 
 
-  async findOne(operator: any) {
-    return `This action updates a operator`;
+  async findOne(airQuality: any) {
+    return `This action updates a airQuality`;
   }
 
-  update(id: number, updateOperatorDto: UpdateAirQualityDto) {
-    return `This action updates a #${id} operator`;
+  update(id: number, updateAirQualityDto: UpdateAirQualityDto) {
+    return `This action updates a #${id} airQuality`;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} operator`;
+    return `This action removes a #${id} airQuality`;
   }
 }
