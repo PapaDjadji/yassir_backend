@@ -9,12 +9,15 @@ import { CommandModule } from 'nestjs-command';
 import { MongodbConfigService } from './config/mongodb.config.service';
 import { simpleFunc } from './middlewares/simple-func.middleware';
 import { AirQualityModule } from './api/airQuality/airQuality.module';
+import { ScheduleModule } from '@nestjs/schedule';
+
 
 @Module({
   imports: [
     ConfigModule,
     AirQualityModule,
     CommandModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     MongooseModule.forRootAsync({
       imports: [

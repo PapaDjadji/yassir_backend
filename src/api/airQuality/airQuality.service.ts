@@ -11,10 +11,10 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AirQualityService {
 
-  constructor(@InjectModel('AirQuality') private airQualityModel: Model<AirQuality>, private configService : ConfigService) { }
+  constructor(@InjectModel('AirQuality') private airQualityModel: Model<AirQuality>, private configService: ConfigService) { }
 
   create(createAirQualityDto: CreateAirQualityDto) {
-    return `This action returns all operator`;
+    return this.airQualityModel.create(createAirQualityDto);
   }
 
   async getPollution(lat: string, lon: string) {
@@ -25,6 +25,13 @@ export class AirQualityService {
       }, error => {
         throw new HttpException(error.message, error.status);
       });
+  }
+
+  async findMostPolluted() {
+    return await this.airQualityModel.findOne()
+      .sort({ aqius: -1 })
+      .select('-ts -aqius -mainus -aqicn -maincn -active -_id -created_at -updated_at -__v')
+      .exec()
   }
 
   findAll() {
