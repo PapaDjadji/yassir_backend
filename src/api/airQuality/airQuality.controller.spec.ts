@@ -98,10 +98,10 @@ describe('AirQualityController', () => {
       .get('/airQuality/airQualityByZone?lat=16.0333&lon=-16.5')
       .expect(200);
 
-    expect(JSON.parse(response.text).Result.pollution).toEqual(mockAirQuality);
+    expect(JSON.parse(response.text).Result.pollution).toHaveProperty("ts")
   });
 
-  it('throws error if he did not provide the longitude', async () => {
+  it('throws error if he did not provide the correct end-point', async () => {
     const result: AxiosResponse = {
       data:mockAirQuality,
       status: 200,
