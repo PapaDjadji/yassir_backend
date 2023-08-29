@@ -80,7 +80,7 @@ async function bootstrap() {
 
   await app.listen(port);
   logger.info(
-    `KALPE IS RUNNING ON PORT ${port}: ${await app.getUrl()}`,
+    `YASSIR IS RUNNING ON PORT ${port}: ${await app.getUrl()}`,
   );
   console.log("--DB URI---",app.get(ConfigService).get('db'));
   if (module.hot) {

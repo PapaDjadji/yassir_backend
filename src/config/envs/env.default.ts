@@ -5,9 +5,6 @@ const projectRootPath = path.join(__dirname, '../../../../');
 require('dotenv').config({ path: path.join(projectRootPath, '.env') });
 export const config = {
   port: process.env.PORT,
-  jwtAlgorithm: process.env.ALG,
-  privateKey: process.env.PRIVATE_KEY,
-  publicKey: process.env.PUBLIC_KEY,
   db: {
     uri: process.env.MONGODB_URL,
   },
