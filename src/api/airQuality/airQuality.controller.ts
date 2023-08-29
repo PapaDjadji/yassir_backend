@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, Req, HttpException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { logger } from 'src/utils/logger';
+import { logger } from '../../utils/logger';
 import { AirQualityService } from './airQuality.service';
 import { CreateAirQualityDto } from './dto/create-airQuality.dto';
 import { UpdateAirQualityDto } from './dto/update-airQuality.dto';
@@ -12,11 +11,10 @@ const PARISLON = "2.352222";
 export class AirQualityController {
 
 
-  constructor(private readonly airQualityService: AirQualityService,
-    private schedulerRegistry: SchedulerRegistry) { }
+  constructor(private readonly airQualityService: AirQualityService) { }
 
   @Post('create')
-  async create(@Res() res, @Body() createAirQualityDto: CreateAirQualityDto) {
+  create(@Body() createAirQualityDto: CreateAirQualityDto) {
     return this.airQualityService.create(createAirQualityDto);
   }
 

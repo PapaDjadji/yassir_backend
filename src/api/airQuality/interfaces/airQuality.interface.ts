@@ -6,7 +6,6 @@ export interface AirQuality extends Document {
   mainus:string;
   aqicn: number;
   maincn: string;
-  city: string;
   date: string;
   time: string;
   readonly created_at: Date;

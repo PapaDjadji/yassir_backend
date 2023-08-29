@@ -20,9 +20,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     MongooseModule.forRootAsync({
-      imports: [
-        ConfigModule],
-        useClass: MongodbConfigService,
+      imports: [ConfigModule],
+      useClass: MongodbConfigService,
       inject: [ConfigService],
     }),
     MomentModule.forRoot({

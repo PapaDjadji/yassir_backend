@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { CreateAirQualityDto } from './dto/create-airQuality.dto';
 import { UpdateAirQualityDto } from './dto/update-airQuality.dto';
 import { AirQuality } from './interfaces/airQuality.interface';
-import axios from 'axios';
+import axios from "axios";
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AirQualityService {
       .then(response => {
         delete response.data.data.current.weather;
         return response.data.data.current;
-      }, error => {
+      }, error => { 
         throw new HttpException(error.message, error.status);
       });
   }

@@ -22,7 +22,6 @@ export const AirQualitySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    city: String,
     date: String,
     time: String,
     active: {

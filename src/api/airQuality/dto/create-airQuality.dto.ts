@@ -17,9 +17,6 @@ export class CreateAirQualityDto {
     maincn: string;
 
     @IsOptional()
-    city?: string;
-
-    @IsOptional()
     date?: string;
 
     @IsOptional()

@@ -1,1 +1,1 @@
-export class airQuality {}
+export class AirQuality {}
