@@ -7,7 +7,7 @@
 node_modules/
 dist/
 uploads/
-.env
+# .env
 
 # Compiled Java class files
 *.class

@@ -17,14 +17,14 @@ export class AirQualityService {
     return this.airQualityModel.create(createAirQualityDto);
   }
 
-  async getPollution(query: Query) {
+  async getPollution(query: Query, URL_API_AIR_QUALITY, KEY_API_AIR_QUALITY) {
     const lat = query.lat;
     const lon = query.lon;
-    return await axios.get(`${this.configService.get("URL_API_AIR_QUALITY")}?lat=${lat}&lon=${lon}&key=${this.configService.get("KEY_API_AIR_QUALITY")}`)
+    return await axios.get(`${URL_API_AIR_QUALITY}?lat=${lat}&lon=${lon}&key=${KEY_API_AIR_QUALITY}`)
       .then(response => {
         delete response.data.data.current.weather;
         return response.data.data.current;
-      }, error => { 
+      }, error => {
         throw new HttpException(error.message, error.status);
       });
   }

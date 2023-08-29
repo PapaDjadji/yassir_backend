@@ -1,15 +1,25 @@
+import { ConsoleLogger, HttpModule, HttpService, HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
+import { AppModule } from '../../app.module';
+import * as request from 'supertest';
 import { AirQualityController } from './airQuality.controller';
 import { AirQualityService } from './airQuality.service';
 import { CreateAirQualityDto } from './dto/create-airQuality.dto';
 import { AirQuality } from './entities/airQuality.entity';
+import { AxiosResponse } from 'axios';
+import { of } from 'rxjs';
 
 describe('AirQualityController', () => {
   let controller: AirQualityController;
+  let service: AirQualityService;
   let model: Model<AirQuality>;
+  let configService: ConfigService;
+  let app: INestApplication;
+  let httpService: HttpService;
+
 
   const mockAirQualityService = {
     create: jest.fn(),
@@ -19,15 +29,16 @@ describe('AirQualityController', () => {
   };
 
   const mockAirQuality = {
-    "ts": "2023-08-29T00:00:00.000Z",
-    "aqius": 127,
+    "ts": "2023-08-29T12:00:00.000Z",
+    "aqius": 38,
     "mainus": "p2",
-    "aqicn": 64,
+    "aqicn": 13,
     "maincn": "p2"
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule, HttpModule],
       controllers: [AirQualityController],
       providers: [AirQualityService, ConfigService,
         {
@@ -37,7 +48,13 @@ describe('AirQualityController', () => {
     }).compile();
 
     controller = module.get<AirQualityController>(AirQualityController);
+    service = module.get<AirQualityService>(AirQualityService);
+    configService = module.get<ConfigService>(ConfigService);
     model = module.get<Model<AirQuality>>(getModelToken(AirQuality.name));
+
+    app = module.createNestApplication();
+    httpService =module.get<HttpService>(HttpService);
+    await app.init();
   });
 
   it('should be defined', () => {
@@ -66,18 +83,41 @@ describe('AirQualityController', () => {
     });
   });
 
-  describe('airQualityByZone ', () => {
-    it(' RETURN INFORMATION AIR QUALITY By ZONE - PARIS ', async () => {
-      const query = { lat: '48.856613', lon: '2.352222' };
+  describe('findAirQualityByZone', () => {
+  it('GET pollution from Zone (PARIS)', async () => {
+    const result: AxiosResponse = {
+      data: mockAirQuality,
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: undefined
+    };
+    jest.spyOn(httpService, 'get').mockImplementationOnce(() => of(result.data));
 
-      jest.spyOn(controller, 'findAirQualityByZone').mockImplementation()
+    const response = await request(app.getHttpServer())
+      .get('/airQuality/airQualityByZone?lat=16.0333&lon=-16.5')
+      .expect(200);
 
-      const result = await controller.findAirQualityByZone(query, query);
-      console.log("result", result)
-
-      expect(result.result.pollution).toEqual(mockAirQuality);
-    });
+    expect(JSON.parse(response.text).Result.pollution).toEqual(mockAirQuality);
   });
+
+  it('throws error if he did not provide the longitude', async () => {
+    const result: AxiosResponse = {
+      data:mockAirQuality,
+      status: 200,
+      statusText: '',
+      headers: {},
+      config: undefined
+    };
+
+    jest.spyOn(httpService, 'get').mockImplementationOnce(() => of(result.data));
+
+    return await request(app.getHttpServer())
+      .get('/airQuality/airQualityByZonee?lat=16.0333&lon=')
+      .expect(404);
+  });
+});
+
 
 
 });

@@ -3,15 +3,20 @@ import { logger } from '../../utils/logger';
 import { AirQualityService } from './airQuality.service';
 import { CreateAirQualityDto } from './dto/create-airQuality.dto';
 import { UpdateAirQualityDto } from './dto/update-airQuality.dto';
-import { Cron, CronExpression} from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 const PARISLAT = "48.856613";
 const PARISLON = "2.352222";
 
 @Controller('airQuality')
 export class AirQualityController {
+  URL_API_AIR_QUALITY: string;
+  KEY_API_AIR_QUALITY: string;
 
-
-  constructor(private readonly airQualityService: AirQualityService) { }
+  constructor(private readonly airQualityService: AirQualityService, private configService: ConfigService) {
+    this.URL_API_AIR_QUALITY = this.configService.get("URL_API_AIR_QUALITY");
+    this.KEY_API_AIR_QUALITY = this.configService.get("KEY_API_AIR_QUALITY");
+  }
 
   @Post('create')
   create(@Body() createAirQualityDto: CreateAirQualityDto) {
@@ -22,8 +27,7 @@ export class AirQualityController {
   async findAirQualityByZone(@Query() query, @Res() res) {
     logger.info('--- AIRQUALITY.CONTROLLER.FIND_AIR_QUALITY_BY_ZONE INIT ---');
     try {
-      const pollution = await this.airQualityService.getPollution(query);
-      console.log("pol", pollution)
+      const pollution = await this.airQualityService.getPollution(query, this.URL_API_AIR_QUALITY, this.KEY_API_AIR_QUALITY);
       return res.status(HttpStatus.OK).json({ "Result": pollution });
     }
     catch (error) {
@@ -35,8 +39,8 @@ export class AirQualityController {
   async getAirQualityOfZone() {
     logger.info('--- AIR_QUALITY.CONTROLLER.GET_AIR_QUALIT_OF_ZONE INIT ---');
     try {
-      const query = { lat: PARISLAT, lon:  PARISLON };
-      const airQualityInfo = await this.airQualityService.getPollution(query);
+      const query = { lat: PARISLAT, lon: PARISLON };
+      const airQualityInfo = await this.airQualityService.getPollution(query, this.URL_API_AIR_QUALITY, this.KEY_API_AIR_QUALITY);
       const pollution = airQualityInfo.pollution;
       pollution.time = pollution.ts.match(/\d\d:\d\d/)[0];
       pollution.date = pollution.ts.slice(0, 10);

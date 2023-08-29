@@ -1,7 +1,9 @@
+import { HttpModule, HttpService, INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
+import { AppModule } from '../../app.module';
 import { AirQualityService } from './airQuality.service';
 import { CreateAirQualityDto } from './dto/create-airQuality.dto';
 import { AirQuality } from './entities/airQuality.entity';
@@ -10,24 +12,19 @@ import { AirQuality } from './entities/airQuality.entity';
 describe('AirQualityService', () => {
   let service: AirQualityService;
   let model: Model<AirQuality>;
+  let app: INestApplication;
+  let httpService: HttpService;
 
   const mockAirQualityService = {
     create: jest.fn(),
+    getPollution: jest.fn(),
     airQualityByZone: jest.fn(),
-    findMostPolluted: jest.fn(),
-    getPollution: jest.fn()
+    findMostPolluted: jest.fn()
   };
-
-  const mockAirQuality = {
-    "ts": "2023-08-29T00:00:00.000Z",
-    "aqius": 127,
-    "mainus": "p2",
-    "aqicn": 64,
-    "maincn": "p2"
-  };
-
+  
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule, HttpModule],
       providers: [AirQualityService, ConfigService,
         {
           provide: getModelToken(AirQuality.name),
@@ -37,12 +34,15 @@ describe('AirQualityService', () => {
 
     service = module.get<AirQualityService>(AirQualityService);
     model = module.get<Model<AirQuality>>(getModelToken(AirQuality.name));
+
+    app = module.createNestApplication();
+    httpService =module.get<HttpService>(HttpService);
+    await app.init();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
 
 
 });
