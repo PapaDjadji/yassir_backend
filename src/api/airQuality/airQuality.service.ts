@@ -6,6 +6,7 @@ import { UpdateAirQualityDto } from './dto/update-airQuality.dto';
 import { AirQuality } from './interfaces/airQuality.interface';
 import axios from "axios";
 import { ConfigService } from '@nestjs/config';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class AirQualityService {
@@ -16,7 +17,9 @@ export class AirQualityService {
     return this.airQualityModel.create(createAirQualityDto);
   }
 
-  async getPollution(lat: string, lon: string) {
+  async getPollution(query: Query) {
+    const lat = query.lat;
+    const lon = query.lon;
     return await axios.get(`${this.configService.get("URL_API_AIR_QUALITY")}?lat=${lat}&lon=${lon}&key=${this.configService.get("KEY_API_AIR_QUALITY")}`)
       .then(response => {
         delete response.data.data.current.weather;
